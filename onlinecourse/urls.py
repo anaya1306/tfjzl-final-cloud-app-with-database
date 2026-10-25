@@ -1,73 +1,71 @@
-from django.urls import path
 
+from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
 
 from . import views
 
-
 app_name = 'onlinecourse'
 
-
 urlpatterns = [
-
-    # route is a string contains a URL pattern
-    # view refers to the view function
-    # name the URL
-
+    # Course list
     path(
-        route='',
-        view=views.CourseListView.as_view(),
+        '',
+        views.CourseListView.as_view(),
         name='index'
     ),
 
+    # User registration
     path(
         'registration/',
         views.registration_request,
         name='registration'
     ),
 
+    # User login
     path(
         'login/',
         views.login_request,
         name='login'
     ),
 
+    # User logout
     path(
         'logout/',
         views.logout_request,
         name='logout'
     ),
 
-    # ex: /onlinecourse/5/
+    # Course details
     path(
         '<int:pk>/',
         views.CourseDetailView.as_view(),
         name='course_details'
     ),
 
-    # ex: /enroll/5/
+    # Enroll in a course
     path(
         '<int:course_id>/enroll/',
         views.enroll,
         name='enroll'
     ),
 
-    # Submit exam
+    # Submit an exam
     path(
         '<int:course_id>/submit/',
         views.submit,
         name='submit'
     ),
 
-    # Show exam result
+    # Display exam results
     path(
-        '<int:course_id>/exam_result/<int:submission_id>/',
+        '<int:course_id>/submission/<int:submission_id>/result/',
         views.show_exam_result,
         name='show_exam_result'
     ),
+]
 
-] + static(
+urlpatterns += static(
     settings.MEDIA_URL,
     document_root=settings.MEDIA_ROOT
 )
